@@ -37,29 +37,52 @@ ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
 var drawing = false;
-var [lastX , lastY] = [0 , 0];
+var going_up = true;
+var [lastX , lastY, hue , width] = [0 , 0 , 0 , 5];
 
-function draw(cursor, effect) {
+function draw(cursor) {
     if(!drawing) { return }
 
-    if( effect == "none") {
-        console.log("effect worked");
+    let effect = document.querySelector('button.on') ? document.querySelector('button.on').id : 'basic';
+
+    if( effect == 'colorize' ) {
+        ctx.lineWidth = slider.value;
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    }
+    else if( effect == 'rainbow' ) {
+        ctx.lineWidth = width
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    }
+    else {
+        ctx.lineWidth = slider.value;
+        ctx.strokeStyle = 'black'
     }
 
-    ctx.lineWidth = slider.value;
 
     ctx.beginPath();
     ctx.moveTo( lastX , lastY );
     ctx.lineTo(cursor.offsetX, cursor.offsetY);
     ctx.stroke();
+
     [lastX , lastY] = [cursor.offsetX , cursor.offsetY];
+
+    // No need to mess with these variables in basic mode
+    if( effect != 'basic' ) {
+        hue = (hue >= 360)?  0 : hue+1 ;
+    
+        if( width <= 0 )   { going_up = true }
+        if( width >= 100 ) { going_up = false }
+        width = (going_up)?  width+1 : width-1 ;
+    }
+    
 }
 
 canvas.addEventListener('mousedown', (e) => { 
-    drawing = true ;
+    drawing = true;
     [lastX , lastY] = [e.offsetX , e.offsetY];
 })
-canvas.addEventListener('mousemove', (e) => { draw(e, 'none') })
+canvas.addEventListener('mousemove', draw)
 canvas.addEventListener('mouseup', () => { drawing = false })
+canvas.addEventListener('mouseout', () => { drawing = false })
 
 
