@@ -10,26 +10,50 @@
                 overflow: hidden;
             }
             header {
-                background: blue;
+                /* background: url(rainbow.png); */
+                background: linear-gradient(to right, gray, white);
+                background-size: auto 100%;
                 padding: 0.5em;
                 justify-content: space-around;
+                align-items: center;
                 display: flex;
+                font-family: sans-serif;
             }
             label {
                 display: block;
                 text-align: center;
+            }
+            button {
+                font-weight: bold;
+                box-sizing: border-box;
+                padding: 0.5em 1em;
+                border: 10px solid transparent;
+                
+            }
+            button:hover {
+                background: black;
+                color: white;
+            }
+            button#colorize {
+                border-image: linear-gradient(to left, #3acfd5 0%, #3a4ed5 100%);
+                border-image-slice: 1;
+            }
+            button#rainbow {
+                border-image: linear-gradient(to left, #d4d259 0%, #73d53a 25%, #3ad5cd 50%, #443ad5 75%, #d53a3a 100%);
+                border-image-slice: 1;
             }
         </style>
     </head>
 
     <body>
         <header>
-            <button> Colorize </button>
+            <button id="basic"> Basic </button>
+            <button id="colorize"> Colorize </button>
+            <button id="rainbow">Rainbow Fun Time</button>
             <div>
                 <label>Line Width</label>
                 <input type="range">
             </div>
-            <button>Rainbow Fun Time</button>
         </header>
         <canvas></canvas>
     </body>
